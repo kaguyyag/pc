@@ -1,0 +1,89 @@
+# _*_ coding:utf-8 _*_
+
+"""
+import requests
+
+def getHTMLText(url):
+    try:
+        r = requests.get(url,timeout =30)
+        r.raise_for_status()  #如果状态不是200 引发异常
+        r.encoding = r.apparent_encoding #使得返回内容的解码正确
+        return r.text
+    except:
+        return "产生异常"
+
+if __name__== "__main__":
+    url ="http://www.baidu.com"
+    print(getHTMLText(url))
+"""
+
+
+
+
+"""
+import  requests
+url = "https://item.jd.com/3536662.html"  #爬京东
+try:
+    r = requests.get(url)
+    r.raise_for_status()
+    r.encoding = r.apparent_encoding
+    print(r.text[:1000])
+except:
+    print("爬取失败")
+"""
+
+
+
+
+
+"""
+kv ={'user_agent':'Mozilla/5.0'} #换一个user_agent 模拟为浏览器 躲避反爬虫
+url="http://xxxxxxx"
+r= requests.get(url,headers =kv)
+r.status_code # ==200 则状态正常
+#爬取失败后 如下代码
+import  requests
+url = "被保护的网站"  #爬亚马逊
+try:
+    kv ={'user_agent':'Mozilla/5.0'}
+    r= requests.get(url,headers =kv)
+    r.raise_for_status()
+    r.encoding = r.apparent_encoding
+    print(r.text[1000:2000])
+except:
+    print("爬取失败")
+"""
+
+#百度搜索  关键词接口http://www.baidu.com/s?wd=keword
+#百度搜索全代码
+"""
+import requests
+keyword = "python"  #模拟搜索python
+try:
+    kv = {'wd':'python'}
+    r = requests.get("http://www.baidu.com/s",params=kv)
+    print(r.request.url)
+    r.raise_for_status()
+    print(len(r.text))  #搜索长度
+except:
+    print("爬取失败")
+"""
+#爬取图片
+import requests
+import os
+url ="http://pic4.nipic.com/20091217/3885730_124701000519_2.jpg"
+root = "F://pics//"  #根目录
+path = root + url.split('/')[-1] #与网络文件名称相同
+try:
+    if not os.path.exists(root):   #判断根目录是否存在
+        os.mkdir(root)             #如果不存在 建立一个根目录
+    if not os.path.exists(path):   #判断文件是否存在
+        r = requests.get(url)
+        with open(path,'wb')as f:   #转化为二进制
+            f.write(r.content)    #r.content 表示返回内容的二进制 用 f.write 写出来
+            f.close()
+            print("文件保存成功")
+    else:
+        print("文件已存在")
+except:
+    print("爬取失败")
